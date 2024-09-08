@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <link rel="stylesheet" href="styled.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Additional styles for modal and buttons */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dark-blue-button {
+            background-color: #004080;
+            color: white;
+        }
+
+        .payment-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: red;
+        }
+
+        .quantity-button {
+            border: 1px solid #ddd;
+            background: #f4f4f4;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            margin: 0 15px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="nav-container flex justify-between items-center p-5 bg-white shadow-md">
+        <!-- Navbar Links for Desktop -->
+        <ul id="navMenu" class=" md:flex space-x-4  text-gray-700 hover:text-gray-900 focus:outline-none">
+          <li><a href="home.html" class="text-gray-700 hover:text-gray-900">Home</a></li>
+          <li><a href="shop.html" class="text-gray-700 hover:text-gray-900">Shop</a></li>
+          <li><a href="about.html" class="text-gray-700 hover:text-gray-900">About Us</a></li>
+          <li><a href="blog.html" class="text-gray-700 hover:text-gray-900">Blogs</a></li>
+        </ul>
+    </div>
+
+    <!-- Cart Items -->
+    <div id="cart-items"></div>
+
+    <!-- Total Price -->
+    <h2 id="total-price">Total Price: $0</h2>
+
+    <!-- Buttons -->
+    <button id="clear-cart" class="dark-blue-button">Clear Cart</button>
+    <button id="proceed-checkout" class="dark-blue-button">Proceed to Checkout</button>
+    <button id="proceed-buying" class="dark-blue-button">Proceed to Buying</button>
+
+    <!-- Modal Popup for Details -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Enter Your Details</h3>
+            <form id="details-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required><br><br>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required><br><br>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required><br><br>
+
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required><br><br>
+
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" required><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <button type="submit" id="proceed-payment" class="dark-blue-button">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Popup for Payment Method -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h3>Select Payment Method</h3>
+            <button id="online-payment" class="payment-button">Online/UPI</button>
+            <button id="cod-payment" class="payment-button">Cash on Delivery</button>
+        </div>
+    </div>
+
+    <!-- Modal Popup for UPI QR Code -->
+    <div id="qr-modal" class="modal">
+        <div class="modal-content">
+            <h3>Online/UPI Payment</h3>
+            <div id="qr-code-container">
+                <img id="qr-code"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png"
+                    alt="QR Code" style="width: 100px; height: 100px;">
+                <p>Total Amount: <span id="qr-total-amount">$0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup for Order Placed -->
+    <div id="order-placed-modal" class="modal">
+        <div class="modal-content">
+            <h3>Your order has been placed!</h3>
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartItems = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        const clearCartButton = document.getElementById('clear-cart');
+        const proceedCheckoutButton = document.getElementById('proceed-checkout');
+        const proceedBuyingButton = document.getElementById('proceed-buying');
+        const detailsModal = document.getElementById('details-modal');
+        const paymentModal = document.getElementById('payment-modal');
+        const qrModal = document.getElementById('qr-modal');
+        const orderPlacedModal = document.getElementById('order-placed-modal');
+        const closeModals = document.querySelectorAll('.close');
+    
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalPrice = 0;
+    
+        function updateCart() {
+            cartItems.innerHTML = ''; // Clear current items
+            totalPrice = 0; // Reset total price
+    
+            cart.forEach((item, index) => {
+                let itemDiv = document.createElement('div');
+                itemDiv.classList.add('cart-item');
+                itemDiv.innerHTML = `<img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                                     <p>${item.name}</p>
+                                     <p>Quantity: <span id="quantity-${index}">${item.quantity}</span></p>
+                                     <p>Price: $${item.price}</p>
+                                     <p>Total: $${item.quantity * item.price}</p>
+                                     <button onclick="removeItem(${index})" class="remove-item">
+                                     <img src="trash.png" alt="Remove Item" style="width: 20px; height: 20px;">
+                                     </button>
+                                     <button onclick="decreaseQuantity(${index})" class="quantity-button">-</button>
+                                     <button onclick="increaseQuantity(${index})" class="quantity-button">+</button>`;
+                cartItems.appendChild(itemDiv);
+                totalPrice += item.quantity * item.price;
+            });
+    
+            totalPriceElement.innerText = `Total Price: $${totalPrice}`;
+        }
+    
+        window.removeItem = function (index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+    
+        window.decreaseQuantity = function (index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            }
+        }
+    
+        window.increaseQuantity = function (index) {
+            cart[index].quantity++;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+    
+        clearCartButton.addEventListener('click', () => {
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        });
+    
+        proceedCheckoutButton.addEventListener('click', () => {
+            detailsModal.style.display = 'block';
+        });
+    
+        proceedBuyingButton.addEventListener('click', () => {
+            window.location.href = 'view-all.html';
+        });
+    
+        document.getElementById('details-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            detailsModal.style.display = 'none';
+            paymentModal.style.display = 'block';
+        });
+    
+        document.getElementById('online-payment').addEventListener('click', () => {
+            paymentModal.style.display = 'none';
+            qrModal.style.display = 'block';
+            document.getElementById('qr-total-amount').innerText = `$${totalPrice}`;
+        });
+    
+        document.getElementById('cod-payment').addEventListener('click', () => {
+            paymentModal.style.display = 'none';
+            orderPlacedModal.style.display = 'block';
+            setTimeout(() => {
+                orderPlacedModal.style.display = 'none';
+                clearCartButton.click(); // Clear cart after order placed
+            }, 2000); // Simulate delay
+        });
+    
+        closeModals.forEach(button => {
+            button.addEventListener('click', () => {
+                detailsModal.style.display = 'none';
+                paymentModal.style.display = 'none';
+                qrModal.style.display = 'none';
+                orderPlacedModal.style.display = 'none';
+            });
+        });
+    
+        window.onclick = function (event) {
+            if (event.target === detailsModal || event.target === paymentModal || event.target === qrModal || event.target === orderPlacedModal) {
+                detailsModal.style.display = 'none';
+                paymentModal.style.display = 'none';
+                qrModal.style.display = 'none';
+                orderPlacedModal.style.display = 'none';
+            }
+        }
+    
+        updateCart();
+    });
+</script>
+</body>
+</html>

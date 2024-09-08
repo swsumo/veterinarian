@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+  /* Basic resets and styles */
+*, *::after, *::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #e8e8e8;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  color: #363636;
+  font-size: 2.5rem;
+}
+
+.inner-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.card {
+  flex-basis: 33.33333%;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.inner-card {
+  background-color: #fff;
+  padding: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  border-radius: 20px;
+}
+
+.img-wrapper {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 10px;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.content {
+  margin-bottom: 20px;
+}
+
+.content h1 {
+  font-weight: 900;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.content p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.btn-wrapper {
+  display: block;
+  text-align: center;
+}
+
+.view-btn {
+  width: 70%;
+  height: 40px;
+  border: none;
+  background-color: steelblue;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,.4);
+}
+
+.light-box {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0,.6);
+  width: 100%;
+  height: 100vh;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease-out;
+}
+
+.box {
+  width: 90%;
+  max-width: 600px;
+  height: 80%;
+  background-color: #fff;
+  transform: scale(0);
+  transition: all 200ms ease-in-out;
+  padding: 10px;
+  box-shadow: 0 3px 9px rgba(0,0,0,.1);
+  position: relative;
+}
+
+.box-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 15px;
+}
+
+.box .light-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.box .close-btn {
+  position: absolute;
+  z-index: 100;
+  font-size: 30px;
+  color: #ccc;
+  left: 100%;
+  top: 0;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  display: block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 35px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 200ms linear;
+}
+
+/* Effect */
+.effect .light-box {
+  opacity: 1;
+  visibility: visible;
+}
+
+.effect .light-box .box {
+  transform: scale(1);
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 992px) {
+  .inner-wrapper {
+    flex-direction: column;
+  }
+  .card {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .content h1 {
+    font-size: 1.25rem;
+  }
+  .content p {
+    font-size: 0.75rem;
+  }
+  .view-btn {
+    width: 80%;
+  }
+  .box {
+    width: 90%;
+    height: 70%;
+  }
+}
+
+@media (max-width: 576px) {
+  .content h1 {
+    font-size: 1rem;
+  }
+  .content p {
+    font-size: 0.75rem;
+  }
+  .box .close-btn {
+    margin-left: 0;
+    left: 85%;
+    top: -10%;
+  }
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-image img {
+  max-width: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.profile-content {
+  text-align: center;
+}
+
+.moments-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.moments-image img {
+  width: 100%;
+  height: auto;
+}
+
+.moments-content {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.moments-content h2 {
+  color: #d33f49;
+  font-size: 1.25rem;
+}
+
+.moments-content p {
+  color: #333;
+}
+
+@media (max-width: 576px) {
+  .moments-content {
+    top: 5px;
+    left: 5px;
+    max-width: 90%;
+  }
+}
+
+/* Social icons */
+.mt-8.text-center a {
+  text-decoration: none;
+  color: #333;
+}
+
+.mt-8.text-center a:hover {
+  color: #555;
+}
+
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-container flex justify-center items-center p-5 bg-white shadow-md">
+    <ul class="nav-menu flex space-x-4">
+      <li><a href="index.html" class="text-gray-700 hover:text-gray-900">Home</a></li>
+      <li><a href="about.html" class="text-gray-700 hover:text-gray-900">About</a></li>
+      <li><a href="shop.html" class="text-gray-700 hover:text-gray-900">Shops</a></li>
+
+    </ul>
+    
+  </div>
+</nav>
+
+
+
+
+
+
+
+<div class="profile-container">
+  <div class="profile-image">
+    <img src="https://images.unsplash.com/photo-1632498301446-5f78baad40d0?q=80&w=1064&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Picture">
+  </div>
+  <div class="profile-content">
+    <h2>The one looking after mothers and their offspring</h2>
+    <p><strong>Professor Sylvie Chastant</strong>, a member of our Puppy & Kitten Expert Board, is a professor of Reproduction at the National School of Veterinary Medicine in Toulouse, France. Before her current position, she taught animal reproduction at the prestigious veterinary school in Alfort, near Paris, from which she-- and fellow board member Dr. Pascale Chavatte-Palmer--graduated. A self-described ‘total workaholic,’ Professor Chastant is dedicated to the health of, essentially, kittens and puppies from birth to around 2 months.</p>
+    <p>According to her parents, she announced she was going to become a veterinarian at the age of 6. Her great-grandfather had also been one. Young Sylvie was fascinated by reproduction from a relatively early age as well, captivated by the fact that two simple cells could join together to form an entire and complex organism, a life. And, as newborns are born so fragile, she rightly thought it would be interesting and worthwhile to work on making their start in life a less bumpy ride.</p>
+    <p class="credentials"><strong>Credentials:</strong> Veterinarian • Specialist in Reproductive and Developmental Biology • Professor of Veterinary Reproduction <br>
+    <strong>Homebase:</strong> The Ecole Nationale Vétérinaire de Toulouse <br>
+    <strong>Where in the world:</strong> Toulouse, France</p>
+  </div>
+</div>
+
+
+<div class="wrapper">
+    <div class="container">
+      <h1 class="title">MY BLOGS </h1>
+      <div class="inner-wrapper">
+        <div class="card">
+          <div class="inner-card">
+            <div class="img-wrapper">
+              <img src="https://images.unsplash.com/photo-1553322378-eb94e5966b0c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+            </div>
+            <div class="content">
+              <h1>Card Title</h1>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt, dolore!</p>
+            </div>
+            <div class="btn-wrapper">
+              <button class="view-btn" data-src="https://images.unsplash.com/photo-1553322378-eb94e5966b0c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">View</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="inner-card">
+            <div class="img-wrapper">
+              <img src="https://images.unsplash.com/photo-1556866261-8763a7662333?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+            </div>
+            <div class="content">
+              <h1>Card Title</h1>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt, dolore!</p>
+            </div>
+            <div class="btn-wrapper">
+              <button class="view-btn" data-src="https://images.unsplash.com/photo-1556866261-8763a7662333?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">View</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="inner-card">
+            <div class="img-wrapper">
+              <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+            </div>
+            <div class="content">
+              <h1>Card Title</h1>
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt, dolore!</p>
+            </div>
+            <div class="btn-wrapper">
+              <button class="view-btn" data-src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="light-box">
+    <div class="box-wrapper">
+      <div class="box">
+        <span class="close-btn">&times</span>
+        <img src="" alt="" class="light-img">
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-wrap justify-between">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">About Us</h3>
+          <p class="text-gray-400">We are dedicated to providing the best care for your pets. Contact us for more information.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Quick Links</h3>
+          <ul class="flex space-x-4">
+            <li>
+                <a href="https://www.instagram.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.whatsapp.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="w-6 h-6">
+                </a>
+            </li>
+        </ul>
+        
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Contact Us</h3>
+          <ul>
+            <li><a href="#" class="text-gray-400 hover:underline">123 Street, City, Country</a></li>
+            <li><a href="tel:(+123)456-7890" class="text-gray-400 hover:underline">(+123) 456-7890</a></li>
+            <li><a href="mailto:info@example.com" class="text-gray-400 hover:underline">info@example.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+<script>
+    
+let lightImg = document.querySelector(".light-img");
+let viewBtn = document.querySelectorAll(".view-btn");
+
+viewBtn.forEach(el => {
+  el.addEventListener("click", () => {
+    document.body.classList.add("effect");
+    let imgSrc = el.getAttribute("data-src");
+    lightImg.src = imgSrc;
+  });
+});
+
+window.addEventListener("click", event => {
+  if(event.target.className == "box-wrapper" || event.target.className == "close-btn") {
+    document.body.classList.remove("effect");
+  }
+});
+</script>
+
+<script>
+  // Get the modal and buttons
+const loginBtn = document.getElementById('loginBtn');
+const loginModal = document.getElementById('loginModal');
+const signUpBtn = document.getElementById('signUpBtn');
+const loginSwitchBtn = document.getElementById('loginSwitchBtn');
+
+// Forms and title
+const loginForm = document.getElementById('loginForm');
+const signUpForm = document.getElementById('signUpForm');
+const modalTitle = document.getElementById('modalTitle');
+
+// Show login modal on button click
+loginBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    loginModal.classList.remove('hidden');
+});
+
+// Switch to sign up form
+signUpBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    loginForm.classList.add('hidden');
+    signUpForm.classList.remove('hidden');
+    modalTitle.textContent = 'Sign Up';
+});
+
+// Switch back to login form
+loginSwitchBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    signUpForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+    modalTitle.textContent = 'Login';
+});
+
+// Close modal when clicking outside of it
+window.addEventListener('click', function(e) {
+    if (e.target === loginModal) {
+        loginModal.classList.add('hidden');
+    }
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Card</title>
+    <link rel="stylesheet" href="styled.css">
+    <style>
+        .product-card {
+            width: 200px;
+            cursor: pointer;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .profile-container {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-image img {
+  max-width: 250px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.profile-content {
+  color: #333;
+}
+
+.profile-content h2 {
+  color: #d33f49;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.profile-content p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.profile-content .credentials {
+  font-style: italic;
+  color: #666;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="product-card" id="product-card">
+    <img src="https://images.unsplash.com/photo-1655210913315-e8147faf7600?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Product Image">
+</div>
+
+<!-- Modal Popup -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="https://images.unsplash.com/photo-1655210913315-e8147faf7600?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Product Image" id="modal-image" style="width: 100%; border-radius: 10px;">
+        <h2>Product Name</h2>
+        <p>Product Description</p>
+
+        <!-- Quantity Selection -->
+        <label for="quantity">Quantity:</label>
+        <select id="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <!-- Size Selection -->
+        <label for="size">Size:</label>
+        <select id="size">
+            <option value="1Lt">1Lt</option>
+            <option value="2Lt">2Lt</option>
+            <option value="3Lt">3Lt</option>
+        </select><br><br>
+
+        <button id="add-to-cart" class="dark-blue-button">Add to Cart</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productCard = document.getElementById('product-card');
+        const modal = document.getElementById('product-modal');
+        const span = document.getElementsByClassName('close')[0];
+        const addToCartButton = document.getElementById('add-to-cart');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        productCard.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        addToCartButton.onclick = function() {
+            const quantity = document.getElementById('quantity').value;
+            const size = document.getElementById('size').value;
+
+            const product = {
+                image: 'https://via.placeholder.com/200',
+                name: 'Product Name',
+                quantity: quantity,
+                size: size,
+                price: 50 // Example price
+            };
+
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            window.location.href = 'cart.html';
+        }
+    });
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop by Pet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .dropdown-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #98caff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 300px; /* Adjust this value as needed */
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-container">
+        <button class="dropdown-button" id="dropdownButton">Shop According to Your Pet</button>
+        <div class="dropdown-content" id="dropdownMenu">
+            <a href="#dog">Dog</a>
+            <a href="#cat">Cat</a>
+            <a href="#birds">Birds</a>
+            <a href="#hamster">Hamster</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('dropdownButton').addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('#dropdownButton')) {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                if (dropdownMenu.style.display === 'block') {
+                    dropdownMenu.style.display = 'none';
+                }
+            }
+        });
+    </script>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for horizontal scrolling */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for webkit browsers */
+        }
+
+        .product-card {
+            flex: 0 0 auto;
+            width: 200px;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .moments-container {
+  position: relative;
+  width: 100%; /* Full width of the parent container */
+  max-width: 1200px; /* Increase the maximum width */
+  height: 500px; /* Fixed height of 500px */
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.moments-image img {
+  width: 100%; /* Ensure the image covers the entire width of the container */
+  height: 100%; /* Ensure the image covers the entire height of the container */
+  object-fit: cover; /* Preserve aspect ratio while covering the container */
+  display: block;
+  border-radius: 10px;
+}
+
+.moments-content {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.moments-content h2 {
+  color: #d33f49;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.moments-content p {
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <header class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-bold">Product Gallery</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-8">
+        <div class="scroll-container">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200x250" alt="Product Image">
+            </div>
+            <!-- Add more product cards as needed -->
+        </div>
+    </main>
+
+</body>
+
+</html>
+<div class="flex flex-wrap justify-center">
+</div>
+
+<div class="profile-container">
+    <div class="profile-image">
+      <img src="https://images.unsplash.com/photo-1714013439265-8eaea14a133b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Picture">
+    </div>
+    <div class="profile-content">
+      <h2>The one looking after mothers and their offspring</h2>
+      <p><strong>Professor Sylvie Chastant</strong>, a member of our Puppy & Kitten Expert Board, is a professor of Reproduction at the National School of Veterinary Medicine in Toulouse, France. Before her current position, she taught animal reproduction at the prestigious veterinary school in Alfort, near Paris, from which she-- and fellow board member Dr. Pascale Chavatte-Palmer--graduated. A self-described ‘total workaholic,’ Professor Chastant is dedicated to the health of, essentially, kittens and puppies from birth to around 2 months.</p>
+      <p>According to her parents, she announced she was going to become a veterinarian at the age of 6. Her great-grandfather had also been one. Young Sylvie was fascinated by reproduction from a relatively early age as well, captivated by the fact that two simple cells could join together to form an entire and complex organism, a life. And, as newborns are born so fragile, she rightly thought it would be interesting and worthwhile to work on making their start in life a less bumpy ride.</p>
+      <p class="credentials"><strong>Credentials:</strong> Veterinarian • Specialist in Reproductive and Developmental Biology • Professor of Veterinary Reproduction <br>
+      <strong>Homebase:</strong> The Ecole Nationale Vétérinaire de Toulouse <br>
+      <strong>Where in the world:</strong> Toulouse, France</p>
+    </div>
+  </div>
+  
+  <div class="moments-container">
+    <div class="moments-content">
+      <h2>Moments that matter</h2>
+      <p>1999 - Creation of a lab dedicated to dog oocytes and embryos</p>
+      <p>2010 - Transfer to Ecole Nationale Vétérinaire de Toulouse, a geographical and thematic change, from bovine reproduction and canine IVF research to teaching cat and dog reproduction</p>
+      <p>2012 - Creation of NeoCare, research unit devoted to canine and feline neonatology</p>
+    </div>
+    <div class="moments-image">
+      <img src="https://images.unsplash.com/photo-1534361960057-19889db9621e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Moments Image">
+    </div>
+  </div>
+  
+  
+
+  <div class="profile-container">
+    <div class="profile-image">
+      <img src="https://images.unsplash.com/photo-1714013439265-8eaea14a133b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Picture">
+    </div>
+    <div class="profile-content">
+      <h2>The one looking after mothers and their offspring</h2>
+      <p><strong>Professor Sylvie Chastant</strong>, a member of our Puppy & Kitten Expert Board, is a professor of Reproduction at the National School of Veterinary Medicine in Toulouse, France. Before her current position, she taught animal reproduction at the prestigious veterinary school in Alfort, near Paris, from which she-- and fellow board member Dr. Pascale Chavatte-Palmer--graduated. A self-described ‘total workaholic,’ Professor Chastant is dedicated to the health of, essentially, kittens and puppies from birth to around 2 months.</p>
+      <p>According to her parents, she announced she was going to become a veterinarian at the age of 6. Her great-grandfather had also been one. Young Sylvie was fascinated by reproduction from a relatively early age as well, captivated by the fact that two simple cells could join together to form an entire and complex organism, a life. And, as newborns are born so fragile, she rightly thought it would be interesting and worthwhile to work on making their start in life a less bumpy ride.</p>
+      <p class="credentials"><strong>Credentials:</strong> Veterinarian • Specialist in Reproductive and Developmental Biology • Professor of Veterinary Reproduction <br>
+      <strong>Homebase:</strong> The Ecole Nationale Vétérinaire de Toulouse <br>
+      <strong>Where in the world:</strong> Toulouse, France</p>
+    </div>
+  </div>
+</body>
+</html>
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veterinary Clinic</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-container flex justify-between items-center p-5 bg-white shadow-md">
+    <!-- Navbar Links for Desktop -->
+    <ul id="navMenu" class=" md:flex space-x-4  text-gray-700 hover:text-gray-900 focus:outline-none">
+      <li><a href="home.html" class="text-gray-700 hover:text-gray-900">Home</a></li>
+      <li><a href="shop.html" class="text-gray-700 hover:text-gray-900">Shop</a></li>
+      <li><a href="about.html" class="text-gray-700 hover:text-gray-900">About Us</a></li>
+      <li><a href="blog.html" class="text-gray-700 hover:text-gray-900">Blogs</a></li>
+    </ul>
+    <!-- Login Link -->
+    <div class="login">
+      <a href="#" id="loginBtn" class="login-link flex items-center text-gray-700 hover:text-gray-900">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-a-TsxH9PktJwB8farsqn2EOlcsO9ODhp_Q&s" alt="Login" class="login-icon w-6 h-6 mr-2"> Log In
+      </a>
+    </div>
+  </div>
+  <!-- Dropdown Menu for Mobile -->
+  <div id="dropdownMenu" class="md:hidden hidden bg-white shadow-md mt-2">
+    <ul class="space-y-2 p-4">
+      <li><a href="home.html" class="block text-gray-700 hover:text-gray-900">Home</a></li>
+      <li><a href="shop.html" class="block text-gray-700 hover:text-gray-900">Shop</a></li>
+      <li><a href="about.html" class="block text-gray-700 hover:text-gray-900">About Us</a></li>
+      <li><a href="blogs.html" class="block text-gray-700 hover:text-gray-900">Blogs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Login/Sign-Up Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center" id="modalTitle">Login</h2>
+    <div id="loginForm">
+      <div class="mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <a href="#" class="text-xs text-gray-500">Forget Password?</a>
+        </div>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+      </div>
+      <div class="mt-8">
+        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="border-b w-1/5 md:w-1/4"></span>
+        <a href="#" id="signUpBtn" class="text-xs text-gray-500 uppercase">or sign up</a>
+        <span class="border-b w-1/5 md:w-1/4"></span>
+      </div>
+    </div>
+
+    <div id="signUpForm" class="hidden">
+      <div class="mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+      </div>
+      <div class="mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="tel" />
+      </div>
+      <div class="mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+      </div>
+      <div class="mt-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+      </div>
+      <div class="mt-8">
+        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Sign Up</button>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="border-b w-1/5 md:w-1/4"></span>
+        <a href="#" id="loginSwitchBtn" class="text-xs text-gray-500 uppercase">or login</a>
+        <span class="border-b w-1/5 md:w-1/4"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Hero Section -->
+  <section class="relative w-full h-96">
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
+      <source src="5368064-hd_1280_720_30fps.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+      <h1 class="text-5xl font-bold">Healthy Starts Here</h1>
+      <p class="mt-4 text-xl">FOR UR LOVED ONES ONLY 
+
+      </p>
+      <a href="appointment.html" class="mt-6 bg-white text-gray-800 px-6 py-2 rounded-full hover:bg-gray-200 transition duration-300">Book an Appointment</a>
+    </div>
+  </section>
+
+  <!-- Meet Rachel Section -->
+  <section class="container mx-auto px-6 py-16">
+    <div class="bg-[#375764] text-white shadow-lg rounded-lg flex flex-wrap md:flex-nowrap">
+      <div class="p-8 md:w-2/3 bg-[#375764]">
+        <h2 class="text-3xl font-semibold mb-2 text-black">Meet Rachel</h2>
+        <p class="text-sm mb-4 text-black">Certified Health Coach & Nutrition Expert</p>
+        <p class="mb-6 text-black">I'm a paragraph. Click here to add your own text and edit me. It's easy. Just click “Edit Text” or double click me to add your own content and make changes to the font. Feel free to drag and drop me anywhere you like on your page. I'm a great place for you to tell a story and let your users know a little more about you.</p>
+        <a href="#" class="text-[#a5d8dd] hover:underline">Read more</a>
+      </div>
+      <div class="w-full md:w-1/3">
+        <img class="w-full h-64 object-cover" src="https://images.unsplash.com/photo-1700665537604-412e89a285c3?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Rachel">
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Specialize In Section -->
+  <section class="container mx-auto px-6 py-16">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">What I Specialize In</h2>
+      <p class="text-gray-600">My Services</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="h-1/2">
+          <img src="https://plus.unsplash.com/premium_photo-1702599034826-083f01bafb22?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Service 1" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 text-center">
+          <h3 class="text-xl font-semibold mb-2">Operations</h3>
+          <p class="text-gray-600">Specializes in all kinds of operations</p>
+        </div>
+      </div>
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="h-1/2">
+          <img src="https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Service 2" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 text-center">
+          <h3 class="text-xl font-semibold mb-2">Treatments</h3>
+          <p class="text-gray-600">Treatments regarding allergies and infections</p>
+        </div>
+      </div>
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="h-1/2">
+          <img src="https://plus.unsplash.com/premium_photo-1691869263954-804734a474fd?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Service 3" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 text-center">
+          <h3 class="text-xl font-semibold mb-2">Diet Planning for Pets</h3>
+          <p class="text-gray-600">Healthify your pet's lifestyle</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Contact Section -->
+  <section class="container mx-auto px-6 py-16">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">Contact Us</h2>
+    </div>
+    <div class="bg-white shadow-md rounded-lg">
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Get in Touch</h3>
+            <p class="text-gray-600">Feel free to reach out to us through any of the following ways:</p>
+            <ul class="mt-4 text-gray-600">
+              <li class="flex items-center mb-2">
+                <i class="fas fa-map-marker-alt mr-2"></i>
+                <span>123 Street, City, Country</span>
+              </li>
+              <li class="flex items-center mb-2">
+                <i class="fas fa-phone mr-2"></i>
+                <span>(+123) 456-7890</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-envelope mr-2"></i>
+                <span>info@example.com</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Our Location</h3>
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe class="w-full h-full rounded-lg shadow-md" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.716040526379!2d-122.41590508468291!3d37.78583577975759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808c0174e62b%3A0xb235e29915fc4cf4!2sGolden%20Gate%20Bridge!5e0!3m2!1sen!2sus!4v1625565834144!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-wrap justify-between">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">About Us</h3>
+          <p class="text-gray-400">We are dedicated to providing the best care for your pets. Contact us for more information.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Quick Links</h3>
+          <ul class="flex space-x-4">
+            <li>
+                <a href="https://www.instagram.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.whatsapp.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="w-6 h-6">
+                </a>
+            </li>
+        </ul>
+        
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Contact Us</h3>
+          <ul>
+            <li><a href="#" class="text-gray-400 hover:underline">123 Street, City, Country</a></li>
+            <li><a href="tel:(+123)456-7890" class="text-gray-400 hover:underline">(+123) 456-7890</a></li>
+            <li><a href="mailto:info@example.com" class="text-gray-400 hover:underline">info@example.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle mobile menu
+    document.getElementById('dropdownButton').addEventListener('click', function () {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Open Login Modal
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      document.getElementById('loginModal').classList.add('show');
+    });
+
+    // Close Modal
+    document.getElementById('loginModal').addEventListener('click', function (event) {
+      if (event.target === this) {
+        this.classList.remove('show');
+      }
+    });
+
+    // Switch to Sign Up Form
+    document.getElementById('signUpBtn').addEventListener('click', function () {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signUpForm').classList.remove('hidden');
+      document.getElementById('modalTitle').textContent = 'Sign Up';
+    });
+
+    // Switch to Login Form
+    document.getElementById('loginSwitchBtn').addEventListener('click', function () {
+      document.getElementById('signUpForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+      document.getElementById('modalTitle').textContent = 'Login';
+    });
+  </script>
+
+</body>
+
+</html>
+

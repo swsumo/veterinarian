@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styled.css">
+    <style>
+        /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.products-header {
+    background-color: rgb(188, 219, 255);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.875rem; /* 30px */
+}
+
+.product-card {
+    flex: 0 0 auto;
+    width: 200px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start;
+}
+
+.product-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.dropdown-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #6f757c;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    text-decoration-thickness: 3px;
+    text-decoration-color: black;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.view-all-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+}
+
+.view-all-button:hover {
+    background-color: #333;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+    gap: 20px;
+    width: calc(100% - 20px); /* Adjusted for padding */
+    scroll-snap-type: x mandatory;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .product-card {
+        width: 150px; /* Adjust for smaller screens */
+    }
+}
+
+@media (max-width: 992px) {
+    .scroll-container {
+        gap: 15px; /* Smaller gap on medium screens */
+    }
+
+    .product-card {
+        width: 180px; /* Adjust for medium screens */
+    }
+
+    .dropdown-button {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-header {
+        font-size: 1.5rem; /* Smaller font size */
+    }
+
+    .product-card {
+        width: 140px; /* Adjust for smaller screens */
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 2rem; /* Smaller font size */
+    }
+
+    .view-all-button {
+        font-size: 0.875rem;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .products-header {
+        font-size: 1.25rem; /* Smaller font size */
+    }
+
+    .product-card {
+        width: 100px; /* Adjust for very small screens */
+    }
+
+    h1 {
+        font-size: 1.5rem; /* Smaller font size */
+    }
+
+    .view-all-button {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container flex justify-center items-center p-5 bg-white shadow-md">
+          <ul class="nav-menu flex space-x-4">
+            <li><a href="index.html" class="text-gray-700 hover:text-gray-900">Home</a></li>
+            <li><a href="shop.html" class="text-gray-700 hover:text-gray-900">Shops</a></li>
+            <li><a href="blog.html" class="text-gray-700 hover:text-gray-900">Blog</a></li>
+          </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="relative w-full h-96">
+        <img src="https://images.unsplash.com/photo-1493962853295-0fd70327578a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Dog running in water" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 flex items-center bg-gradient-custom">
+            <div class="w-full md:w-1/2 p-8 text-blue-900">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold">Natural Ingredients</h2>
+                    <p class="mt-2">I'm a paragraph. Click here to add your own text and edit me.</p>
+                </div>
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold">100% Homemade</h2>
+                    <p class="mt-2">I'm a paragraph. Click here to add your own text and edit me.</p>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold">Sourced in the US</h2>
+                    <p class="mt-2">I'm a paragraph. Click here to add your own text and edit me.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-center">Our new products</h1>
+
+
+
+    <main class="container mx-auto py-8">
+        <div class="scroll-container">
+            <!-- Product Cards -->
+
+            <div class="product-card border border-gray-300 p-4 w-64 text-center" data-name="Product Name" data-price="19.99" data-image="Screenshot 2024-08-18 165342.png">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+            
+            <div class="product-card border border-gray-300 p-4 w-64 text-center">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+            <div class="product-card border border-gray-300 p-4 w-64 text-center">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+            <div class="product-card border border-gray-300 p-4 w-64 text-center">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+            <div class="product-card border border-gray-300 p-4 w-64 text-center">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+            <div class="product-card border border-gray-300 p-4 w-64 text-center">
+                <img src="Screenshot 2024-08-18 165342.png" alt="Product Image" class="w-full h-auto mb-4">
+                <div class="price-section mt-2 text-lg font-semibold text-gray-800">
+                    $19.99
+                </div>
+                <button class="view-details" onclick="openModal(this)">View Details</button>
+            </div>
+            
+                <!-- Add more product cards as needed -->
+
+        </div>
+    </main>
+
+    <!-- Modal Popup -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-image" style="width: 100%; border-radius: 10px;">
+            <h2 id="modal-name">Product Name</h2>
+            <p id="modal-description">Product Description</p>
+    
+            <!-- Quantity Selection -->
+            <label for="quantity">Quantity:</label>
+            <select id="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select><br><br>
+    
+            <!-- Size Selection -->
+            <label for="size">Size:</label>
+            <select id="size">
+                <option value="1Lt">1Lt</option>
+                <option value="2Lt">2Lt</option>
+                <option value="3Lt">3Lt</option>
+            </select><br><br>
+    
+            <button id="add-to-cart" class="dark-blue-button">Add to Cart</button>
+        </div>
+    </div>
+    
+<!-- Temporary Popup -->
+<div id="temporary-popup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 hidden">
+    <div class="bg-white p-4 rounded-lg shadow-lg text-center">
+        <p class="text-lg font-semibold">Item added to the cart!!</p>
+    </div>
+</div>
+
+
+
+    <a href="view-all.html" class="view-all-button">View All</a>
+
+
+    
+    <!-- Floating View Cart Button -->
+    <div class="fixed bottom-4 right-4">
+        <button onclick="window.location.href='cart.html';" class="view-cart-button bg-blue-900 text-white py-2 px-4 rounded shadow-lg bounce">
+            View Cart
+        </button>
+    </div>
+    
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-wrap justify-between">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">About Us</h3>
+          <p class="text-gray-400">We are dedicated to providing the best care for your pets. Contact us for more information.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Quick Links</h3>
+          <ul class="flex space-x-4">
+            <li>
+                <a href="https://www.instagram.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="w-6 h-6">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.whatsapp.com" target="_blank" class="text-gray-400 hover:text-gray-900">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="w-6 h-6">
+                </a>
+            </li>
+        </ul>
+        
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2">Contact Us</h3>
+          <ul>
+            <li><a href="#" class="text-gray-400 hover:underline">123 Street, City, Country</a></li>
+            <li><a href="tel:(+123)456-7890" class="text-gray-400 hover:underline">(+123) 456-7890</a></li>
+            <li><a href="mailto:info@example.com" class="text-gray-400 hover:underline">info@example.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <script>
+        // Get all product cards
+        const productCards = document.querySelectorAll('.product-card');
+        const modal = document.getElementById("product-modal");
+        const modalImage = document.getElementById("modal-image");
+        const closeBtn = document.querySelector(".close");
+
+        // Add event listener to each product card
+        productCards.forEach(card => {
+            card.addEventListener('click', function () {
+                const imgSrc = this.querySelector('img').src;
+                modalImage.src = imgSrc;
+                modal.style.display = "block";
+            });
+        });
+
+        // Close modal
+        closeBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking outside the modal content
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        document.getElementById('dropdownButton').addEventListener('click', function () {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        window.addEventListener('click', function (event) {
+            if (!event.target.matches('#dropdownButton')) {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                if (dropdownMenu.style.display === 'block') {
+                    dropdownMenu.style.display = 'none';
+                }
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+    const productModal = document.getElementById('product-modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalName = document.getElementById('modal-name');
+    const modalDescription = document.getElementById('modal-description');
+    const addToCartButton = document.getElementById('add-to-cart');
+    const closeModalButtons = document.querySelectorAll('.close');
+    let currentProduct = {};
+
+    // Open modal with product details
+    window.openModal = function (button) {
+        const productCard = button.closest('.product-card');
+        currentProduct = {
+            name: productCard.getAttribute('data-name'),
+            price: parseFloat(productCard.getAttribute('data-price')),
+            image: productCard.getAttribute('data-image'),
+        };
+
+        modalImage.src = currentProduct.image;
+        modalName.textContent = currentProduct.name;
+        modalDescription.textContent = `Price: $${currentProduct.price}`;
+
+        productModal.style.display = 'block';
+    }
+
+    // Add item to cart
+    addToCartButton.addEventListener('click', function () {
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const size = document.getElementById('size').value;
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let item = cart.find(item => item.name === currentProduct.name && item.size === size);
+
+        if (item) {
+            item.quantity += quantity;
+        } else {
+            cart.push({
+                name: currentProduct.name,
+                price: currentProduct.price,
+                quantity: quantity,
+                size: size,
+                image: currentProduct.image
+            });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        productModal.style.display = 'none';
+        alert('Product added to cart');
+    });
+
+    // Close modal
+    closeModalButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            productModal.style.display = 'none';
+        });
+    });
+
+    // Close modal if clicking outside of it
+    window.addEventListener('click', function (event) {
+        if (event.target === productModal) {
+            productModal.style.display = 'none';
+        }
+    });
+});
+
+    // Existing code...
+
+    // Add to Cart Function
+    document.getElementById('add-to-cart').onclick = function() {
+        const quantity = document.getElementById('quantity').value;
+        const size = document.getElementById('size').value;
+        const product = {
+            name: document.getElementById('modal-name').innerText,
+            description: document.getElementById('modal-description').innerText,
+            image: document.getElementById('modal-image').src,
+            quantity: quantity,
+            size: size,
+            price: 19.99 // Replace with dynamic price if needed
+        };
+
+        // Add product to cart (example using localStorage)
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Show the temporary popup
+        const popup = document.getElementById('temporary-popup');
+        popup.classList.remove('hidden');
+
+        // Hide the popup after 5 seconds
+        setTimeout(function() {
+            popup.classList.add('hidden');
+        }, 5000);
+
+        // Redirect to cart.html
+        window.location.href = 'cart.html';
+    };
+
+    // Existing code...
+</script>
+
+</body>
+
+</html>

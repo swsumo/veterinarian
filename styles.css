@@ -1,0 +1,154 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .navbar {
+    background-color: white;
+    border-bottom: 1px solid #ddd; /* Optional: Adds a border at the bottom */
+    padding: 10px 20px;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .nav-menu li {
+    margin: 0 15px;
+  }
+  
+  .nav-menu a {
+    text-decoration: none;
+    color: rgb(7, 7, 7);
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .nav-menu a:hover {
+    color: #000; /* Optional: Change text color on hover */
+    background-color: cream; /* Ensure cream is defined in your CSS */
+    padding: 5px 10px; /* Add padding to make hover effect more visible */
+  }
+  
+  .login {
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-link {
+    text-decoration: none;
+    color: rgb(9, 8, 8);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-icon {
+    width: 20px; /* Adjust size of the icon as needed */
+    height: 20px;
+    margin-right: 5px;
+  }
+  
+  .about-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffe6e6;
+    padding: 50px;
+    height: 100vh;
+  }
+  
+  .about-text {
+    flex: 1;
+    margin-right: 50px;
+  }
+  
+  .about-text h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #b37878;
+  }
+  
+  .about-text p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #b37878;
+  }
+  
+  .about-image {
+    flex: 1;
+  }
+  
+  .about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  .services-section {
+    text-align: center;
+    padding: 50px 0;
+  }
+  
+  .services-section h2 {
+    font-size: 2em;
+    color: #b37878; /* Darker pink color */
+    margin-bottom: 50px;
+  }
+  
+  .services-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+  
+  .service {
+    background-color: #ffe6e6;
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .service img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .service h3 {
+    font-size: 1.2em;
+    color: #b37878; /* Darker pink color */
+    margin-bottom: 20px;
+  }
+  
+  .service p {
+    font-size: 0.9em;
+    color: #b37878; /* Darker pink color */
+    margin-bottom: 20px;
+  }
+  
+  .read-more {
+    font-size: 0.9em;
+    color: #b37878; /* Darker pink color */
+    text-decoration: none;
+    border-bottom: 1px solid #b37878;
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  
+  .read-more:hover {
+    color: #000;
+    border-color: #000;
+  }
+  
